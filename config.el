@@ -30,8 +30,30 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
+(setq org-directory "~/Documents/Notes")
+;; (setq org-agenda-files '("~/Documents/Notes"))
+(setq org-agenda-files '("~/Documents/Notes" "~/Documents/Notes/journal" "~/Documents/Notes/roam" "~/Documents/Notes/roam/daily"))
+;; (add-to-list 'org-agenda-files org-journal-dir)
 
+(add-to-list 'org-modules 'org-habit)
+(defun cc/toggle-org-habit-show-habits-only-for-today (arg)
+  "toggle org-habit-show-habits-only-for-today"
+  (interactive "P")
+  (setq org-habit-show-habits-only-for-today (not org-habit-show-habits-only-for-today)))
+(map! :leader
+      :desc "show habits only for today"
+      "t h" #'cc/toggle-org-habit-show-habits-only-for-today)
+;; (global-set-key (kbd "<SPC> t h") (lambda () (setq org-habit-show-habits-only-for-today (not org-habit-show-habits-only-for-today))))
+;; Automatically adds the current and all future journal entries to the agenda.
+;; It's a performance compromise
+;; (setq org-journal-enable-agenda-integration t)
+
+(setq org-journal-date-prefix "#+TITLE: "
+      org-journal-time-prefix "* "
+      org-journal-date-format "%a, %Y-%m-%d"
+      org-journal-file-format "%Y-%m-%d.org")
+
+()
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
@@ -53,3 +75,61 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+
+(setq org-roam-directory "~/Documents/Notes/roam")
+
+;;; -----------------------------------------------------------------------
+;;; customize org-roam title in agenda view (instead of showing file name)
+;;; reference: https://d12frosted.io/posts/2020-06-24-task-management-with-roam-vol2.html
+;;; -----------------------------------------------------------------------
+(setq org-agenda-prefix-format
+      '((agenda . " %i %(vulpea-agenda-category 12)%?-12t% s")
+        (todo . " %i %(vulpea-agenda-category 12) ")
+        (tags . " %i %(vulpea-agenda-category 12) ")
+        (search . " %i %(vaulpea-agenda-category 12) ")))
+
+(defun vulpea-agenda-category (&optional len)
+  "Get category of item at point for agenda.
+
+Category is defined by one of the following items:
+
+- CATEGORY property
+- TITLE keyword
+- TITLE property
+- filename without directory and extension
+
+When LEN is a number, resulting string is padded right with
+spaces and then truncated with ... on the right if result is
+longer than LEN.
+
+Usage example:
+
+  (setq org-agenda-prefix-format
+        '((agenda . \" %(vulpea-agenda-category) %?-12t %12s\")))
+
+Refer to `org-agenda-prefix-format' for more information."
+  (let* ((file-name (when buffer-file-name
+                      (file-name-sans-extension
+                       (file-name-nondirectory buffer-file-name))))
+         (title (vulpea-buffer-prop-get "title"))
+         (category (org-get-category))
+         (result
+          (or (if (and
+                   title
+                   (string-equal category file-name))
+                  title
+                category)
+              "")))
+    (if (numberp len)
+        (s-truncate len (s-pad-right len " " result))
+      result)))
+
+(defun vulpea-buffer-prop-get (name)
+  "Get a buffer property called NAME as a string."
+  (org-with-point-at 1
+    (when (re-search-forward (concat "^#\\+" name ": \\(.*\\)")
+                             (point-max) t)
+      (buffer-substring-no-properties
+       (match-beginning 1)
+       (match-end 1)))))
+
