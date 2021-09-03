@@ -136,3 +136,8 @@ Refer to `org-agenda-prefix-format' for more information."
        (match-beginning 1)
        (match-end 1)))))
 
+;;; -----------------------------------------------------------------------
+;;; Python
+;;; -----------------------------------------------------------------------
+(setq dap-python-debugger 'debugpy
+      dap-python-executable "python3")
