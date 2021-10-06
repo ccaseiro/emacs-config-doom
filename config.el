@@ -141,3 +141,13 @@ Refer to `org-agenda-prefix-format' for more information."
 ;;; -----------------------------------------------------------------------
 (setq dap-python-debugger 'debugpy
       dap-python-executable "python3")
+(defun pyvenv-autoload ()
+          (interactive)
+          "auto activate venv directory if exists"
+          (f-traverse-upwards (lambda (path)
+              (let ((venv-path (f-expand "venv" path)))
+              (when (f-exists? venv-path)
+              (pyvenv-activate venv-path))))))
+
+(add-hook! python-mode 'pyvenv-autoload)
+
