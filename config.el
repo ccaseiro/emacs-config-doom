@@ -141,6 +141,11 @@ Refer to `org-agenda-prefix-format' for more information."
 ;;; -----------------------------------------------------------------------
 (setq dap-python-debugger 'debugpy
       dap-python-executable "python3")
+;; HACK: fix python f-strings + smartparens
+(after! smartparens
+  (sp-local-pair '(python-mode) "f\"" "\"")
+  (sp-local-pair '(python-mode) "f'" "'"))
+
 (defun pyvenv-autoload ()
           (interactive)
           "auto activate venv directory if exists"
