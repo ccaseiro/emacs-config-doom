@@ -49,3 +49,5 @@
 ;(unpin! pinned-package another-pinned-package)
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
+;; (unpin! dap-mode)
+(package! dap-mode :recipe (:host github :repo "emacs-lsp/dap-mode"))

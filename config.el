@@ -20,7 +20,7 @@
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
 (setq doom-font (font-spec :family "Operator Mono Lig" :size 14 :weight 'book :style 'book))
-      ;; doom-variable-pitch-font (font-spec :family "Operator Mono" :size 18))
+;; doom-variable-pitch-font (font-spec :family "Operator Mono" :size 18))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -53,7 +53,6 @@
       org-journal-date-format "%a, %Y-%m-%d"
       org-journal-file-format "%Y-%m-%d.org")
 
-()
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type 'relative)
@@ -141,6 +140,14 @@ Refer to `org-agenda-prefix-format' for more information."
 ;;; -----------------------------------------------------------------------
 (setq dap-python-debugger 'debugpy
       dap-python-executable "python3")
+
+;; (add-hook! python-mode 'anaconda-mode)
+;; (add-hook! vterm-mode 'anaconda-mode)
+;; (add-hook! python-mode 'anaconda-eldoc-mode)
+
+
+;; (setq +evil-collection-disabled-list (remove 'anaconda-mode +evil-collection-disabled-list))
+
 ;; HACK: fix python f-strings + smartparens
 (after! smartparens
   (sp-local-pair '(python-mode) "f\"" "\"")
@@ -155,4 +162,105 @@ Refer to `org-agenda-prefix-format' for more information."
               (pyvenv-activate venv-path))))))
 
 (add-hook! python-mode 'pyvenv-autoload)
+
+(setq consult-imenu-config '(
+        (emacs-lisp-mode :toplevel "Functions" :types
+                  ((102 "Functions" font-lock-function-name-face)
+                   (109 "Macros" font-lock-function-name-face)
+                   (112 "Packages" font-lock-constant-face)
+                   (116 "Types" font-lock-type-face)
+                   (118 "Variables" font-lock-variable-name-face)))
+        (python-mode :toplevel "Packages" :types
+                  ((102 "Functions" font-lock-function-name-face)
+                   (?s "Sections" font-lock-function-name-face)
+                   (109 "Macros" font-lock-function-name-face)
+                   (112 "Packages" font-lock-constant-face)
+                   (116 "Types" font-lock-type-face)
+                   (118 "Variables" font-lock-variable-name-face)))
+        )
+      )
+
+;; (defun my-merge-imenu ()
+;;   (interactive)
+;;   (let ((mode-imenu (lsp--imenu-create-index))
+;;         (custom-imenu (imenu--generic-function imenu-generic-expression)))
+;;     (append mode-imenu custom-imenu)))
+
+
+;; (add-hook 'python-mode-hook
+;;           (lambda ()
+;;             (add-to-list
+;;              'imenu-generic-expression
+;;              '("Sections" "^def \\(.*\\)" 1))
+;;              ;; '("Sections" "^#### \\[ \\(.*\\) \\]$" 1))
+;;             ;; (imenu-add-to-menubar "Position")
+;;             (setq lsp--imenu-create-index 'my-merge-imenu)
+;;             (setq lsp-imenu-create-uncategorized-index 'my-merge-imenu)))
+
+;; (defun my-merge-imenu ()
+;;   (interactive)
+;;   (let ((mode-imenu (imenu-default-create-index-function))
+;;         (custom-imenu (imenu--generic-function imenu-generic-expression)))
+;;     (append mode-imenu custom-imenu)))
+
+
+;; (add-hook! python-mode
+;;           (lambda ()
+;;             (add-to-list
+;;              'imenu-generic-expression
+;;              '("Section" "^def \\(.*\\)" 1))
+;;              ;; '("Sections" "^#### \\[ \\(.*\\) \\]$" 1))
+;;             ;; (imenu-add-to-menubar "Position")
+;;             (setq imenu-create-index-function 'my-merge-imenu)))
+
+
+;; (setq python-consult
+;; `(:name "Projectile projects"
+;;         :narrow   ?P
+;;         :category project
+;;         :action   ,#'projectile-switch-project-by-name
+;;         :items    ,projectile-known-projects))
+;; (add-to-list 'consult-buffer-sources my-consult-source-projectile-projects 'append)
+
+
+;;; -----------------------------------------------------------------------
+;;; Terraform
+;;; -----------------------------------------------------------------------
+
+(setq lsp-terraform-server '("terraform-ls" "serve"))
+;; (lsp-register-client
+;;  (make-lsp-client :new-connection (lsp-stdio-connection '("terraform-ls" "serve"))
+;;                   :major-modes '(terraform-mode)
+;;                   :server-id 'terraform-ls))
+
+;; (add-hook 'terraform-mode-hook #'lspd)
+
+;;; -----------------------------------------------------------------------
+;;; Magit
+;;; -----------------------------------------------------------------------
+(setq magit-wip-mode t)
+
+;;; -----------------------------------------------------------------------
+;;; Keybindings
+;;; -----------------------------------------------------------------------
+
+;; by default doom has those 2 keybindings swaped (better in n"norman" keyboards)
+(map! :map evil-normal-state-map "C-+" 'text-scale-increase)
+(map! :map evil-normal-state-map "C-=" 'doom/reset-font-size)
+
+;;; -----------------------------------------------------------------------
+;;; git gutter
+;;; -----------------------------------------------------------------------
+(setq +vc-gutter-default-style nil)
+
+;;; -----------------------------------------------------------------------
+;;; Misc
+;;; -----------------------------------------------------------------------
+;; (after! terraform (set-company-backend! 'company-files))
+(add-hook! terraform-mode (set-company-backend! 'company-files))
+
+(setq +file-templates-dir (concat doom-private-dir "templates/"))
+
+;; treat '_' as part of the word (see: https://evil.readthedocs.io/en/latest/faq.html#underscore-is-not-a-word-character)
+(defalias 'forward-evil-word 'forward-evil-symbol)
 
