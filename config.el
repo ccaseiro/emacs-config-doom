@@ -264,3 +264,8 @@ Refer to `org-agenda-prefix-format' for more information."
 ;; treat '_' as part of the word (see: https://evil.readthedocs.io/en/latest/faq.html#underscore-is-not-a-word-character)
 (defalias 'forward-evil-word 'forward-evil-symbol)
 
+
+(map! :map evil-normal-state-map "z e" 'hs-hide-level)
+
+;; Add some Leader Keybindings
+(map! :leader "w a" 'ace-window)
