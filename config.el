@@ -269,6 +269,7 @@ Refer to `org-agenda-prefix-format' for more information."
 
 ;; Add some Leader Keybindings
 (map! :leader "w a" 'ace-window)
+(map! :leader "w f" 'ace-swap-window)
 
 ;; Swap leader-: with leader-;
 (map! :leader ":" 'pp-eval-expression
