@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: logger.info
+# key: lli
+# --
+logger.info(f"$0")

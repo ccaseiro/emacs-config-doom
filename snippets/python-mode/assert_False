@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: assert False
+# key: assf
+# --
+assert False
