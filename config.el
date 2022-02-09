@@ -269,6 +269,11 @@ Refer to `org-agenda-prefix-format' for more information."
 ;;; -----------------------------------------------------------------------
 (setq +lsp-company-backends '(:separate company-yasnippet company-capf))
 
+(add-hook! company-mode
+  (map! :map company-active-map "C-n" nil)
+  (map! :i "C-n" 'yas-expand)
+  )
+
 ;;; -----------------------------------------------------------------------
 ;;; Misc
 ;;; -----------------------------------------------------------------------
