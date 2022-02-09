@@ -265,6 +265,11 @@ Refer to `org-agenda-prefix-format' for more information."
 (setenv "FrameworkPathOverride" "/usr/local/lib/mono/4.8-api")
 
 ;;; -----------------------------------------------------------------------
+;;; Yasnippet
+;;; -----------------------------------------------------------------------
+(setq +lsp-company-backends '(:separate company-yasnippet company-capf))
+
+;;; -----------------------------------------------------------------------
 ;;; Misc
 ;;; -----------------------------------------------------------------------
 ;; (after! terraform (set-company-backend! 'company-files))
