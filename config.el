@@ -135,6 +135,17 @@
       deft-strip-summary-regexp ":PROPERTIES:\n\\(.+\n\\)+:END:\n"
       deft-use-filename-as-title t)
 
+(defun cc/search-notes ()
+  "Conduct a text search in files under `user-emacs-directory'."
+  (interactive)
+  (let ((default-directory org-directory))
+    (call-interactively
+     (cond ((featurep! :completion ivy)     #'+ivy/project-search-from-cwd)
+           ((featurep! :completion helm)    #'+helm/project-search-from-cwd)
+           ((featurep! :completion vertico) #'+vertico/project-search-from-cwd)
+           (#'rgrep)))))
+
+(map! :leader "sn" 'cc/search-notes)
 
 ;;; -----------------------------------------------------------------------
 ;;; customize org-roam title in agenda view (instead of showing file name)
