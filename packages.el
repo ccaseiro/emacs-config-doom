@@ -50,4 +50,13 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
 ;; (unpin! dap-mode)
-(package! dap-mode :recipe (:host github :repo "emacs-lsp/dap-mode"))
+;; (package! dap-mode :recipe (:host github :repo "emacs-lsp/dap-mode"))
+;; (package! dap-mode :disable t)
+;; (package! dap-mode)
+
+(package! test-cockpit :recipe (:host github :repo "johannes-mueller/test-cockpit.el"))
+
+(package! speed-type)
+
+(package! modus-themes)
+(package! kaolin-themes)

@@ -359,3 +359,12 @@ Refer to `org-agenda-prefix-format' for more information."
 ;; Swap leader-: with leader-;
 (map! :leader ":" 'pp-eval-expression
       :leader ";" 'execute-extended-command)
+
+(setq zoneinfo-style-world-list '(
+                                  ("America/Los_Angeles" "Los Angeles")
+                                  ("America/New_York" "New York")
+                                  ("America/Sao_Paulo" "Sao Paulo")
+                                  ("Europe/Lisbon" "Lisbon")
+                                  ("Europe/Paris" "Paris")
+                                  ("Asia/Tokyo" "Tokyo")
+                                  ))
