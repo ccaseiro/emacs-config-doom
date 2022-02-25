@@ -118,6 +118,11 @@
 
 
 (setq org-roam-directory "~/Documents/Notes/roam")
+(setq deft-directory org-directory
+      deft-recursive t
+      deft-strip-summary-regexp ":PROPERTIES:\n\\(.+\n\\)+:END:\n"
+      deft-use-filename-as-title t)
+
 
 ;;; -----------------------------------------------------------------------
 ;;; customize org-roam title in agenda view (instead of showing file name)
