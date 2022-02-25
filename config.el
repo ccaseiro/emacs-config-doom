@@ -177,12 +177,30 @@ Refer to `org-agenda-prefix-format' for more information."
 ;;; -----------------------------------------------------------------------
 ;;; Python
 ;;; -----------------------------------------------------------------------
-(setq dap-python-debugger 'debugpy
-      dap-python-executable "python3")
+;; (setq dap-python-debugger 'debugpy)
+;; (setq dap-python-executable "python3")
 
 ;; (add-hook! python-mode 'anaconda-mode)
 ;; (add-hook! vterm-mode 'anaconda-mode)
 ;; (add-hook! python-mode 'anaconda-eldoc-mode)
+
+(dap-mode 1)
+(defun dap-python-johmue-populate-test-at-point (conf)
+  "Populate CONF with the required arguments."
+  (if-let ((test (test-cockpit--python--test-function-path)))
+      (plist-put conf :program test)
+    (user-error "`dap-python': no test at point"))
+  (plist-put conf :cwd (lsp-workspace-root))
+  (dap-python--populate-start-file-args conf))
+
+(dap-register-debug-provider "python-test-at-point" 'dap-python-johmue-populate-test-at-point)
+(dap-register-debug-template "Python :: Run pytest (at point!!!)"
+                             (list :type "python-test-at-point"
+                                   :args ""
+                                   :program nil
+                                   :module "pytest"
+                                   :request "launch"
+                                   :name "Python :: Run pytest (at point!!!)"))
 
 
 ;; (setq +evil-collection-disabled-list (remove 'anaconda-mode +evil-collection-disabled-list))
