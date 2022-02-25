@@ -214,7 +214,7 @@ Refer to `org-agenda-prefix-format' for more information."
           (interactive)
           "auto activate venv directory if exists"
           (f-traverse-upwards (lambda (path)
-              (let ((venv-path (f-expand "venv" path)))
+              (let ((venv-path (f-expand ".venv" path)))
               (when (f-exists? venv-path)
               (pyvenv-activate venv-path))))))
 
