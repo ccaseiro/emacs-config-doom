@@ -343,7 +343,9 @@ Refer to `org-agenda-prefix-format' for more information."
 (defalias 'forward-evil-word 'forward-evil-symbol)
 
 
-(map! :map evil-normal-state-map "z e" 'hs-hide-level)
+(map! :map evil-normal-state-map "z e" 'hs-hide-level
+      :map evil-normal-state-map "z i" 'hs-hide-all
+      :map evil-normal-state-map "z s" 'hs-show-all)
 
 ;; Add some Leader Keybindings
 (map! :leader "w a" 'ace-window)
