@@ -118,6 +118,18 @@
 
 
 (setq org-roam-directory "~/Documents/Notes/roam")
+(setq +org-roam-open-buffer-on-find-file nil)
+
+(setq org-roam-capture-templates '(("d" "default" plain "%?"
+                                    :if-new
+                                    (file+head "${slug}.org"
+                                               "#+title: ${title}\n#+date: %u\n#+lastmod: \n\n")
+                                    :immediate-finish t)
+                                   ("o" "old" plain "%?" :target
+                                    (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+                                    :unnarrowed t))
+      time-stamp-start "#\\+lastmod: [\t]*")
+
 (setq deft-directory org-directory
       deft-recursive t
       deft-strip-summary-regexp ":PROPERTIES:\n\\(.+\n\\)+:END:\n"
