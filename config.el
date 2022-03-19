@@ -29,6 +29,55 @@
 (setq doom-theme 'doom-gruvbox)
 
 ;;; -----------------------------------
+;;; Window
+;;; -----------------------------------
+(defun cc/middle-top-window ()
+  "Move the cursor to center/top window"
+  (interactive)
+  (evil-window-top-left)
+  (windmove-right))
+
+(defun cc/middle-bottom-window ()
+  "Move the cursor to center/top window"
+  (interactive)
+  (cc/middle-top-window)
+  (windmove-down))
+
+(defun cc/right-bottom-window ()
+  "Move the cursor to center/top window"
+  (interactive)
+  (evil-window-top-left)
+  (windmove-right)
+  (windmove-right))
+
+(defun cc/right-top-window ()
+  "Move the cursor to center/top window"
+  (interactive)
+  (cc/right-bottom-window)
+  (windmove-up))
+
+(defun cc/left-bottom-window ()
+  "Move the cursor to center/top window"
+  (interactive)
+  (evil-window-top-left)
+  (windmove-down))
+
+(map! :leader "wN" 'evil-window-new)
+
+(map! :leader "wn" 'evil-window-top-left)
+(map! :leader "we" 'cc/middle-top-window)
+(map! :leader "wi" 'cc/right-top-window)
+;; (map! :leader "w/" 'cc/left-bottom-window)
+(map! :leader "w," 'cc/middle-bottom-window)
+(map! :leader "w." 'cc/right-bottom-window)
+
+(map! :leader "w4" 'evil-window-top-left)
+(map! :leader "w5" 'cc/middle-top-window)
+(map! :leader "w6" 'cc/right-top-window)
+(map! :leader "w1" 'cc/left-bottom-window)
+(map! :leader "w2" 'cc/middle-bottom-window)
+(map! :leader "w3" 'cc/right-bottom-window)
+;;; -----------------------------------
 ;;; Org-mode
 ;;; -----------------------------------
 ;; If you use `org' and don't want your org files in the default location below,
