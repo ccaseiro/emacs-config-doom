@@ -356,6 +356,11 @@ Refer to `org-agenda-prefix-format' for more information."
 ;;         :items    ,projectile-known-projects))
 ;; (add-to-list 'consult-buffer-sources my-consult-source-projectile-projects 'append)
 
+(use-package! lsp-sonarlint)
+
+(use-package! lsp-sonarlint-python)
+(setq lsp-sonarlint-python-enabled t)
+
 
 ;;; -----------------------------------------------------------------------
 ;;; Terraform
