@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: logger.error
+# key: lle
+# --
+logger.error(f"$0")

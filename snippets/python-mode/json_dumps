@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: json.dumps
+# key: jd
+# condition: t
+# --
+json.dumps($0, indent=4)
