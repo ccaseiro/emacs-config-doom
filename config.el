@@ -445,3 +445,9 @@ Refer to `org-agenda-prefix-format' for more information."
                                   ("Europe/Paris" "Paris")
                                   ("Asia/Tokyo" "Tokyo")
                                   ))
+;;; -----------------------------------------------------------------------
+;;; Disable emacs contamining the system clipboard
+;;; -----------------------------------------------------------------------
+(setq select-enable-clipboard nil)
+(map! "s-v" #'clipboard-yank)
+(map! "s-c" #'clipboard-kill-ring-save)
