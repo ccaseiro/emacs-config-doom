@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: debug json var
+# uuid:
+# key: llj
+# condition: t
+# --
+logger.debug(f"$1: {json.dumps(${1:result}, indent=4)}")

@@ -31,7 +31,7 @@
 ;;; -----------------------------------
 ;;; Window
 ;;; -----------------------------------
-(defun cc/middle-top-window ()
+(defun cc/window-top-2 ()
   "Move the cursor to center/top window"
   (interactive)
   (evil-window-top-left)
@@ -40,21 +40,23 @@
 (defun cc/middle-bottom-window ()
   "Move the cursor to center/top window"
   (interactive)
-  (cc/middle-top-window)
+  (cc/window-top-2)
   (windmove-down))
 
-(defun cc/right-bottom-window ()
+(defun cc/window-top-3 ()
   "Move the cursor to center/top window"
   (interactive)
   (evil-window-top-left)
   (windmove-right)
   (windmove-right))
 
-(defun cc/right-top-window ()
+(defun cc/window-top-4 ()
   "Move the cursor to center/top window"
   (interactive)
-  (cc/right-bottom-window)
-  (windmove-up))
+  (evil-window-top-left)
+  (windmove-right)
+  (windmove-right)
+  (windmove-right))
 
 (defun cc/left-bottom-window ()
   "Move the cursor to center/top window"
@@ -65,18 +67,19 @@
 (map! :leader "wN" 'evil-window-new)
 
 (map! :leader "wn" 'evil-window-top-left)
-(map! :leader "we" 'cc/middle-top-window)
-(map! :leader "wi" 'cc/right-top-window)
+(map! :leader "we" 'cc/window-top-2)
+(map! :leader "wi" 'cc/window-top-3)
+(map! :leader "wy" 'cc/window-top-4)
 ;; (map! :leader "w/" 'cc/left-bottom-window)
 (map! :leader "w," 'cc/middle-bottom-window)
-(map! :leader "w." 'cc/right-bottom-window)
+(map! :leader "w." 'evil-window-bottom-right)
 
 (map! :leader "w4" 'evil-window-top-left)
-(map! :leader "w5" 'cc/middle-top-window)
-(map! :leader "w6" 'cc/right-top-window)
+(map! :leader "w5" 'cc/window-top-2)
+(map! :leader "w6" 'cc/window-top-3)
 (map! :leader "w1" 'cc/left-bottom-window)
 (map! :leader "w2" 'cc/middle-bottom-window)
-(map! :leader "w3" 'cc/right-bottom-window)
+(map! :leader "w3" 'evil-window-bottom-right)
 ;;; -----------------------------------
 ;;; Org-mode
 ;;; -----------------------------------
@@ -84,44 +87,130 @@
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/Documents/Notes")
 
-;; org-capture-template
-(setq org-capture-templates
-      '(
-        ("t" "Personal Task"  entry
-         (file +org-capture-todo-file)
-         "* TODO %?\n%i" :empty-lines 1)
-        ("r" "Personal Task (with reference)"  entry
-         (file +org-capture-todo-file)
-         "* TODO %?\n%i\n%a" :empty-lines 1)
-        ("z" "Original Personal todo" entry
-         (file+headline +org-capture-todo-file "Inbox")
-         "* [ ] %?\n%i\n%a" :prepend t)
-        ("n" "Personal notes" entry
-         (file+headline +org-capture-notes-file "Inbox")
-         "* %u %?\n%i\n%a" :prepend t)
-        ("j" "Journal" entry
-         (file+olp+datetree +org-capture-journal-file)
-         "* %U %?\n%i\n%a" :prepend t)
-        ("p" "Templates for projects")
-        ("pt" "Project-local todo" entry
-         (file+headline +org-capture-project-todo-file "Inbox")
-         "* TODO %?\n%i\n%a" :prepend t)
-        ("pn" "Project-local notes" entry
-         (file+headline +org-capture-project-notes-file "Inbox")
-         "* %U %?\n%i\n%a" :prepend t)
-        ("pc" "Project-local changelog" entry
-         (file+headline +org-capture-project-changelog-file "Unreleased")
-         "* %U %?\n%i\n%a" :prepend t)
-        ("o" "Centralized templates for projects")
-        ("ot" "Project todo" entry #'+org-capture-central-project-todo-file "* TODO %?\n %i\n %a" :heading "Tasks" :prepend nil)
-        ("on" "Project notes" entry #'+org-capture-central-project-notes-file "* %U %?\n %i\n %a" :heading "Notes" :prepend t)
-        ("oc" "Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n %i\n %a" :heading "Changelog" :prepend t))
-      )
+(after! org
+  ;;   (add-to-list 'org-capture-templates
+  ;;                '("t" "Personal Task" entry (file +org-capture-todo-file) "* TODO %?\n%i" :empty-lines 1)
+  ;;                )
+  ;;
+  (setq org-capture-templates
+        '(
+          ("t" "Personal Task"  entry
+           (file +org-capture-todo-file)
+           "* TODO %?\n%i" :empty-lines 1)
+          ("r" "Personal Task (with reference)"  entry
+           (file +org-capture-todo-file)
+           "* TODO %?\n%i\n%a" :empty-lines 1)
+          ("z" "Original Personal todo" entry
+           (file+headline +org-capture-todo-file "Inbox")
+           "* [ ] %?\n%i\n%a" :prepend t)
+          ("n" "Personal notes" entry
+           (file+headline +org-capture-notes-file "Inbox")
+           "* %u %?\n%i\n%a" :prepend t)
+          ("j" "Journal" entry
+           (file+olp+datetree +org-capture-journal-file)
+           "* %U %?\n%i\n%a" :prepend t)
+          ("p" "Templates for projects")
+          ("pt" "Project-local todo" entry
+           (file+headline +org-capture-project-todo-file "Inbox")
+           "* TODO %?\n%i\n%a" :prepend t)
+          ("pn" "Project-local notes" entry
+           (file+headline +org-capture-project-notes-file "Inbox")
+           "* %U %?\n%i\n%a" :prepend t)
+          ("pc" "Project-local changelog" entry
+           (file+headline +org-capture-project-changelog-file "Unreleased")
+           "* %U %?\n%i\n%a" :prepend t)
+          ("o" "Centralized templates for projects")
+          ("ot" "Project todo" entry #'+org-capture-central-project-todo-file "* TODO %?\n %i\n %a" :heading "Tasks" :prepend nil)
+          ("on" "Project notes" entry #'+org-capture-central-project-notes-file "* %U %?\n %i\n %a" :heading "Notes" :prepend t)
+          ("oc" "Project changelog" entry #'+org-capture-central-project-changelog-file "* %U %?\n %i\n %a" :heading "Changelog" :prepend t))
+        )
+  (setq org-todo-keywords
+        '((sequence "TODO" "|" "DONE" )
+          (sequence "IN-PROGRESS(p)" "WAITING(w)" "|" "DONE" "CANCELED(c)")))
+  ;; (define-key org-agenda-mode-map "<TAB>" 'org-agenda-show)
+  )
 
+(map! :after evil-org-agenda
+      :map evil-org-agenda-mode-map
+      :m "o" 'org-agenda-show)
+
+(map! :after evil-org-agenda
+      :map evil-org-agenda-mode-map
+      :m "S-SPC" 'evil-switch-to-windows-last-buffer)
+
+(defun cc/switch-agenda-buffer ()
+    "Switch to agenda buffer, or open default agenda."
+    (interactive)
+    (if (get-buffer "*Org Agenda*")
+        (switch-to-buffer "*Org Agenda*")
+      (org-agenda nil "d"))
+    )
+
+(define-key evil-normal-state-map (kbd "S-SPC") 'cc/switch-agenda-buffer)
 
 ;; (setq org-agenda-files '("~/Documents/Notes"))
 (setq org-agenda-files '("~/Documents/Notes" "~/Documents/Notes/journal" "~/Documents/Notes/roam" "~/Documents/Notes/roam/daily"))
 ;; (add-to-list 'org-agenda-files org-journal-dir)
+
+(setq org-priority-highest 65)
+(setq org-priority-default 67)
+(setq org-priority-lowest 69)
+(setq org-priority-start-cycle-with-default nil)
+(setq org-priority-faces
+      '(
+        (65 . error)
+        (66 . warning)
+        (67 . success)
+        (68 . success)
+        (69 . success)
+        ))
+
+
+(defun cc/last-day-of-month-p (date)
+  (let* ((month (calendar-extract-month date))
+         (year (calendar-extract-year date))
+         (last-month-day (calendar-last-day-of-month month year))
+         (month-day (cadr date)))
+    (eq month-day last-month-day)))
+
+
+(defun cc/org-skip-subtree-if-priority (priority)
+  "Skip an agenda subtree if it has a priority of PRIORITY.
+
+PRIORITY may be one of the characters ?A, ?B, or ?C."
+  (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+        (pri-value (* 1000 (- org-lowest-priority priority)))
+        (pri-current (org-get-priority (thing-at-point 'line t))))
+    (if (= pri-value pri-current)
+        subtree-end
+      nil)))
+
+(defun cc/org-skip-subtree-if-habit ()
+  "Skip an agenda entry if it has a STYLE property equal to \"habit\"."
+  (let ((subtree-end (save-excursion (org-end-of-subtree t))))
+    (if (string= (org-entry-get nil "STYLE") "habit")
+        subtree-end
+      nil)))
+
+(setq org-agenda-custom-commands
+      '(
+        ("n" "Agenda and all TODOs"
+         ((agenda "")
+          (alltodo "")))
+        ("d" "Simple agenda view"
+         ((tags "PRIORITY=\"A\""
+                ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                 (org-agenda-overriding-header "High-priority unfinished tasks:")))
+          (agenda "" ((org-agenda-span 3)(org-agenda-start-day "-0d")))
+          (alltodo ""
+                   ((org-agenda-skip-function
+                     '(or (cc/org-skip-subtree-if-priority ?A)
+                          (org-agenda-skip-if nil '(scheduled deadline))))
+                    (org-agenda-overriding-header "ALL normal priority tasks:"))
+                   ))
+         ;; ((org-agenda-compact-blocks t))
+         )))
+
 
 (add-to-list 'org-modules 'org-habit)
 (defun cc/toggle-org-habit-show-habits-only-for-today (arg)
@@ -162,8 +251,7 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
-(setq
- projectile-project-search-path '("~/Developer"))
+(setq projectile-project-search-path '("~/Developer"))
 
 
 (setq org-roam-directory "~/Documents/Notes/roam")
@@ -254,7 +342,7 @@ Refer to `org-agenda-prefix-format' for more information."
 ;;; -----------------------------------------------------------------------
 ;;; Python
 ;;; -----------------------------------------------------------------------
-;; (setq dap-python-debugger 'debugpy)
+(setq dap-python-debugger 'debugpy)
 ;; (setq dap-python-executable "python3")
 
 ;; (add-hook! python-mode 'anaconda-mode)
@@ -361,6 +449,11 @@ Refer to `org-agenda-prefix-format' for more information."
 ;; (use-package! lsp-sonarlint-python)
 ;; (setq lsp-sonarlint-python-enabled t)
 
+(with-eval-after-load 'lsp-mode
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.venv.*\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]__pycache__\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.pytest_cache\\'"))
+
 
 ;;; -----------------------------------------------------------------------
 ;;; Terraform
@@ -386,7 +479,12 @@ Refer to `org-agenda-prefix-format' for more information."
 ;; by default doom has those 2 keybindings swaped (better in n"norman" keyboards)
 (map! :map evil-normal-state-map "C-+" 'text-scale-increase)
 (map! :map evil-normal-state-map "C-=" 'doom/reset-font-size)
+(map! :map evil-normal-state-map "C-0" 'doom/reset-font-size)
 
+(map! :map evil-normal-state-map "s-+" 'text-scale-increase)
+(map! :map evil-normal-state-map "s--" 'text-scale-decrease)
+(map! :map evil-normal-state-map "s-0" 'doom/reset-font-size)
+(map! :map evil-normal-state-map "s-=" 'doom/reset-font-size)
 ;;; -----------------------------------------------------------------------
 ;;; git gutter
 ;;; -----------------------------------------------------------------------
@@ -448,6 +546,6 @@ Refer to `org-agenda-prefix-format' for more information."
 ;;; -----------------------------------------------------------------------
 ;;; Disable emacs contamining the system clipboard
 ;;; -----------------------------------------------------------------------
-(setq select-enable-clipboard nil)
-(map! "s-v" #'clipboard-yank)
-(map! "s-c" #'clipboard-kill-ring-save)
+;; (setq select-enable-clipboard nil)
+;; (map! "s-v" #'clipboard-yank)
+;; (map! "s-c" #'clipboard-kill-ring-save)
